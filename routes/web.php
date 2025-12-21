@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
+Route::post('/portfolio', [PortfolioController::class, 'store'])->name('portfolio.store');

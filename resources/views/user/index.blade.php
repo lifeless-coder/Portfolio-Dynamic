@@ -195,7 +195,7 @@
         <div class="ex-conteiner">
             <div class="ex-card">
                 <div class="ex-details" style="text-align: center;">
-                    <h4 style="color: #000000ff;"><strong>Trainee Web Developer</strong></h5>
+                    <h4 style="color: #000000ff;"><strong>Trainee Developer</strong></h5>
                         <h6>Softtech Solution LTD</h6>
                         <p style="font-size: 13px;">1 Oct 2025 - Present</p>
 
@@ -213,8 +213,9 @@
                     <img src="\img\contact.jpeg" alt="">
                 </div>
                 <div class="right">
-                    <form id="contactForm" class="contact-form">
-                        <input type="text" name="name" placeholder="Your Name" required class="input-box">
+                    <form id="contactForm" class="contact-form" action="{{ route('portfolio.store') }}" method="POST">
+                        @csrf
+                        <input type="text" name="sender" placeholder="Your Name" required class="input-box">
                         <input type="email" name="email" placeholder="Your Email" required class="input-box">
                         <textarea name="message" placeholder="Your Message" required class="input-box"></textarea>
                         <button type="submit">Send Message</button>
@@ -254,8 +255,8 @@
             <!-- Right: Contact Info -->
             <div class="col-md-4 mb-4 text-md-end">
                 <h6 class="fw-bold"><strong>Contact</strong></h6>
-                <p class="mb-1 small">Email: adrita@example.com</p>
-                <p class="mb-1 small">Phone: +880-XXXXXXXXXX</p>
+                <p class="mb-1 small">Email: adritahsn@gmail.com</p>
+                <p class="mb-1 small">Phone: +8801517811919</p>
                 <p class="mb-1 small">Bangladesh</p>
 
                         <a href="https://github.com/lifeless-coder"><i class="bi bi-github"></i></a>
