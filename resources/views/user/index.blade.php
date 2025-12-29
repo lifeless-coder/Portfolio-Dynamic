@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <img src="\img\WhatsApp Image 2025-12-10 at 14.52.46_30fbb86b.jpg" alt="">
+                    <img src="{{ 'img/' . $heroimages->first()->path }}" alt="">
                 </div>
             </div>
         </div>
@@ -88,19 +88,17 @@
             <div class="side-by-side">
                 <div class="left">
                     <h2>Left Side</h2>
-                    <img src="\img\about me.jpeg" alt="">
+                    <img src="{{ 'img/' . $about_image->first()->path }}" alt="">
                 </div>
                 <div class="right" style="padding-top: 70px;">
                     <div style="color: black; font-family: 'Lexend Deca', sans-serif;">
                         <strong>
-                            <h4>I'm Adrita</h4>
-                            <h6>Backend Developer</h6>
+                            <h4>{{ $about->first()->title }}</h4>
+                            <h6>{{ $about->first()->subtitle }}</h6>
                         </strong>
                     </div>
                     <div class="about-me-body">
-                        <p>a backend web developer passionate about building robust and scalable web applications.
-                            I specialize in server-side development, API design, and database management, focusing on efficiency, reliability, and clean code.
-                            I enjoy solving complex problems and continuously exploring new technologies to create systems that perform seamlessly.</p>
+                        <p>{{ $about->first()->description }}</p>
                         <button><a href="https://drive.google.com/file/d/1NTmg-eo9zteA3bzIcFy2KAM-dTYnyirz/view?usp=sharing" style="text-decoration: none; color: white;">Resume</a></button>
                     </div>
 
@@ -127,41 +125,19 @@
     <section id="edu">
         <h1 style="text-align: center; color:black;"><i class="bi bi-mortarboard-fill"></i><strong> My Education</strong> </h1>
         <p style="text-align: center; color:black; font-size: 15px;">Educated by books, refined by practice.</p>
+        
+        @foreach ($educations as $education)
         <div class="edu-container">
             <div class="edu-card">
-                <img src="{{ asset('img/uits.png') }}" class="edu-img" alt="UITS">
+                <img src="{{ asset('img/' . $education->image) }}" class="edu-img" alt="Education Image">
                 <div class="edu-details">
-                    <h4 style="color: #072d55;"><strong>BSc in Computer Science & Engineering</strong></h5>
-                        <h6>University of Information Technology and Sciences(UITS)</h6>
-                        <p style="font-size: 13px;">2022 - Present</p>
-
+                    <h4 style="color: #072d55;"><strong>{{ $education->degree }}</strong></h5>
+                        <h6>{{ $education->institution }}</h6>
+                        <p style="font-size: 13px;">{{ $education->years }}</p>
                 </div>
             </div>
         </div>
-
-        <div class="edu-container">
-            <div class="edu-card">
-                <img src="{{ asset('img\eusc_logo.jpg') }}" class="edu-img" alt="UITS">
-                <div class="edu-details">
-                    <h4 style="color: #072d55;"><strong>Higher Secondery School Certificate</strong></h5>
-                        <h6>Engineering University School and College</h6>
-                        <p style="font-size: 13px;">2018 - 2020</p>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="edu-container">
-            <div class="edu-card">
-                <img src="{{ asset('img\Willes_Little_Flower_School_&_College_Logo.svg.png') }}" class="edu-img" alt="UITS">
-                <div class="edu-details">
-                    <h4 style="color: #072d55;"><strong>Secondery School Certificate</strong></h5>
-                        <h6>Willes Little Flower School and College</h6>
-                        <p style="font-size: 13px;">2015 - 2017</p>
-
-                </div>
-            </div>
-        </div>
+        @endforeach
     </section>
 
     <!-- Projects -->
@@ -234,30 +210,25 @@
 
             <!-- Left: Paragraph -->
             <div class="col-md-4 mb-4">
-                <p class="">
-                    Thank you for visiting my personal portfolio website. Connect with me over socials.
-
-                    <br>Keep Rising 🚀. Connect with me over live chat!
-                </p>
+                <p class="">{{ $footertext->first()->text }}</p>
             </div>
 
             <!-- Middle: Quick Links -->
             <div class="col-md-4 mb-4 text-md-center">
                 <h6 class="fw-bold"><strong>Quick Links</strong></h6>
                 <ul class="list-unstyled">
-                    <li><a href="#hero" class="text-light text-decoration-none">Home</a></li>
-                    <li><a href="#projects" class="text-light text-decoration-none">Projects</a></li>
-                    <li><a href="#experience" class="text-light text-decoration-none">Education</a></li>
-                    <li><a href="#contact" class="text-light text-decoration-none">Contact</a></li>
+                    @foreach ($quicklinks as $quicklink)
+                    <li><a href="{{ $quicklink->url }}" class="text-light text-decoration-none">{{ $quicklink->name }}</a></li>
+                    @endforeach
                 </ul>
             </div>
 
             <!-- Right: Contact Info -->
             <div class="col-md-4 mb-4 text-md-end">
                 <h6 class="fw-bold"><strong>Contact</strong></h6>
-                <p class="mb-1 small">Email: adritahsn@gmail.com</p>
-                <p class="mb-1 small">Phone: +8801517811919</p>
-                <p class="mb-1 small">Bangladesh</p>
+                @foreach ($fcontacts as $contact)
+                <p class="mb-1 small">{{ $contact->text }}</p>
+                @endforeach
 
                         <a href="https://github.com/lifeless-coder"><i class="bi bi-github"></i></a>
                         <a href="https://www.linkedin.com/in/adrita-hasan/"><i class="bi bi-linkedin"></i></a>

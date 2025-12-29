@@ -84,13 +84,9 @@
 
         #hero img {
             width: 60%;
-            /* full width */
             height: auto;
-            /* keep aspect ratio */
             border-radius: 200px;
-            /* optional */
             object-fit: cover;
-            /* optional: crop to fit */
         }
 
         #hero button {
@@ -209,7 +205,11 @@
             margin-bottom: 12px;
         }
 
-
+        #edu{
+            height: auto;
+            min-height: 100vh;
+            padding-bottom: 20px;
+        }
         .edu-container {
             display: flex;
             justify-content: center;
@@ -245,7 +245,11 @@
 
         /* Projects Section */
         #projects {
-            padding: 30px;
+            height: auto;
+            min-height: 100vh;
+            align-items: flex-start;
+            padding-top: 40px;
+            padding-bottom: 70px;
             background: #041c35;
 
         }
@@ -283,6 +287,7 @@
             background: rgba(255, 212, 0, 0.95);
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
             text-align: center;
             justify-content: center;
             padding: 25px;
@@ -296,6 +301,7 @@
         }
 
         .card-overlay h3 {
+            height: fit-content;
             width: 100%;
             font-size: 20px;
             margin-bottom: 20px;
@@ -304,6 +310,7 @@
 
         .card-overlay p {
             font-size: 14px;
+            min-height: 60px;
             margin-bottom: 20px;
             color: #111;
         }
@@ -330,7 +337,7 @@
             background-color: #0a3d73;
         }
 
-        
+
 
         .ex-conteiner {
             display: flex;
