@@ -172,7 +172,9 @@
         #skills {
             padding-top: 30px;
             background: #533cca;
-
+            height: auto;
+            min-height: 100vh;
+            padding-bottom: 1px;
         }
 
         .skills-container {

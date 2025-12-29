@@ -103,7 +103,7 @@ class PortfolioController extends Controller
         $filename = time().'.'.$request->image->extension();
         $request->image->move(public_path('img'), $filename);   
         Skill::create([
-            'title' => $request->name,
+            'name' => $request->title,
             'image' => $filename
         ]); 
         return back()->with('success', 'Skill added successfully!');
