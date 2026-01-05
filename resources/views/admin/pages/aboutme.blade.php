@@ -23,15 +23,10 @@
                 <label>Description</label>
                 <textarea name="description" class="form-control">{{ old('description', $about ? $about->description : '') }}</textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Update About Me</button>
+            <button type="submit" class="btn btn-primary">Save Update</button>
         </form>
 
-        @if($about)
-        <h5>Current About Me:</h5>
-        <p><strong>Title:</strong> {{ $about->title }}</p>
-        <p><strong>Subtitle:</strong> {{ $about->subtitle }}</p>
-        <p><strong>Description:</strong> {{ $about->description }}</p>
-        @endif
+        
     </div>
 </div>
 

@@ -9,42 +9,66 @@
 
     <style>
         body {
+            margin: 0;
             background-color: #f8f9fa;
         }
+
+        /* FIXED SIDEBAR */
         .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 250px;
-            min-height: 100vh;
+            height: 100vh;
             background: #212529;
+            overflow-y: auto;
+            z-index: 1000;
         }
+
+        .sidebar h5 {
+            margin: 0;
+        }
+
         .sidebar a {
             color: #adb5bd;
             text-decoration: none;
             padding: 10px 15px;
             display: block;
         }
+
         .sidebar a:hover,
         .sidebar a.active {
             background: #343a40;
             color: #fff;
         }
+
+        /* MAIN CONTENT AREA */
+        .main-wrapper {
+            margin-left: 250px; /* SAME AS SIDEBAR WIDTH */
+            min-height: 100vh;
+        }
+
         .content {
             padding: 20px;
-            width: 100%;
         }
     </style>
 </head>
 <body>
 
-<div class="d-flex">
-    @include('admin.partials.sidebar')
+{{-- SIDEBAR --}}
+@include('admin.partials.sidebar')
 
-    <div class="flex-grow-1">
-        @include('admin.partials.navbar')
+{{-- MAIN CONTENT --}}
+<div class="main-wrapper">
 
-        <div class="content">
-            @yield('content')
-        </div>
+    {{-- TOP NAVBAR --}}
+    @include('admin.partials.navbar')
+
+    {{-- PAGE CONTENT --}}
+    <div class="content">
+        @yield('content')
     </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

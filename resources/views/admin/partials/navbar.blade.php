@@ -2,9 +2,15 @@
     <div class="container-fluid">
         <span class="navbar-brand">Dashboard</span>
 
-        <div class="ms-auto">
+        <div class="ms-auto d-flex align-items-center gap-2">
+            {{-- View Frontend Button --}}
+            <a href="{{ route('portfolio.index') }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                View Frontend
+            </a>
+
+            {{-- Admin Name --}}
             <span class="text-muted">
-                {{ auth()->user()->name ?? 'Admin' }}
+                Admin
             </span>
         </div>
     </div>

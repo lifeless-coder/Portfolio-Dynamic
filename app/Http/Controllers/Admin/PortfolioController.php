@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 use App\Models\heroimage as Hero;
 use App\Models\Aboutme_image as About;
 use App\Models\Education;
+use App\Models\Footercontact;
 use App\Models\Project;
 use App\Models\Footertext;
 use App\Models\Skill;
+use App\Models\quicklink;
 
 
 class PortfolioController extends Controller
@@ -134,6 +136,12 @@ class PortfolioController extends Controller
         return back()->with('success', 'Skill updated!');
     }
 
+
+    // Education Section
+    public function eduaction(){
+        $educations = Education::all();
+        return view('admin.pages.education', compact('educations'));
+    }
         public function storeEducation(Request $request)
     {
         $request->validate([
@@ -156,7 +164,23 @@ class PortfolioController extends Controller
         return back()->with('success', 'Education added!');
     }
 
-    
+    public function deleteEducation($id)
+    {
+        $education = Education::findOrFail($id);    
+        if (file_exists(public_path('img/'.$education->image))) {
+            unlink(public_path('img/'.$education->image));
+        }    
+        $education->delete();    
+        return back()->with('success', 'Education deleted!');
+    }
+
+
+    // Projects Section
+    public function projects()
+    {
+        $projects = Project::all();
+        return view('admin.pages.project', compact('projects'));
+    }
     public function storeProject(Request $request)
     {
         $request->validate([
@@ -192,18 +216,109 @@ class PortfolioController extends Controller
         return back()->with('success', 'Project deleted!');
     }
 
-    
-    public function updateFooterText(Request $request)
+    public function editProject($id)
     {
+        $project = Project::findOrFail($id);
+        return view('admin.pages.projectUpdate', compact('project'));
+    }
+    public function storeEditProject(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+
         $request->validate([
-            'text' => 'required|string|max:500',
+            'title'       => 'required|string',
+            'description' => 'required|string',
+            'project_url' => 'required|url',
+            'image'       => 'nullable|image'
         ]);
 
-        Footertext::updateOrCreate(
-            ['id' => 1],
-            ['text' => $request->text]
-        );
+        $data = $request->only('title', 'description', 'project_url');
 
-        return back()->with('success', 'Footer text updated!');
+        if ($request->hasFile('image')) {
+            $filename = time().'.'.$request->image->extension();
+            $request->image->move(public_path('img'), $filename);
+            $data['image'] = $filename;
+        }
+
+        $project->update($data);
+
+        return back()->with('success', 'Project updated!');
+    }
+
+
+    // Footer Settings
+
+
+
+    /* FOOTER TEXT */
+    public function footerText()
+    {
+        $texts = Footertext::all();
+        return view('admin.pages.footertext', compact('texts'));
+    }
+
+    public function storeFooterText(Request $request)
+{
+    Footertext::updateOrCreate(
+        ['id' => 1],              // condition
+        ['text' => $request->text] // data to update/create
+    );
+
+    return back()->with('success', 'Footer text updated successfully');
+}
+
+    public function deleteFooterText($id)
+    {
+        Footertext::findOrFail($id)->delete();
+        return back()->with('success', 'Deleted');
+    }
+
+    /* FOOTER CONTACT */
+    public function footerContact()
+    {
+        $contacts = Footercontact::all();
+        return view('admin.pages.footercontact', compact('contacts'));
+    }
+
+    public function storeFooterContact(Request $request)
+    {
+        Footercontact::create([
+            'text' => $request->text
+        ]);
+        return back()->with('success', 'Contact added');
+    }
+
+    public function deleteFooterContact($id)
+    {
+        Footercontact::findOrFail($id)->delete();
+        return back()->with('success', 'Deleted');
+    }
+
+    /* FOOTER QUICK LINK */
+    public function footerQuickLink()
+    {
+        $links = quicklink::all();
+        return view('admin.pages.footerquicklink', compact('links'));
+    }
+
+    public function storeQuickLink(Request $request)
+    {
+        quicklink::create([
+            'name' => $request->name,
+            'url'  => $request->url,
+        ]);
+        return back()->with('success', 'Link added');
+    }
+
+    public function deleteQuickLink($id)
+    {
+        quicklink::findOrFail($id)->delete();
+        return back()->with('success', 'Deleted');
     }
 }
+
+
+
+
+
+
