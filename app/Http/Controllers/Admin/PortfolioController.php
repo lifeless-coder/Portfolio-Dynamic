@@ -65,17 +65,23 @@ class PortfolioController extends Controller
             'title'       => 'required|string',
             'subtitle'    => 'required|string',
             'description' => 'required|string',
+            'path' => 'required|image|mimes:jpg,jpeg,png'
         ]);
+            $filename = time().'.'.$request->path->extension();
+            $request->path->move(public_path('img'), $filename);
 
+        Aboutme_image::updateOrCreate(
+            ['id' => 1],
+            ['path' => $filename]
+        );
         About_me::updateOrCreate(
             ['id' => 1],
             $request->only('title', 'subtitle', 'description')
         );
 
-        $about = About_me::first();
-        $about_img= Aboutme_image::first();
-         return redirect()->route('admin.about.index') // <-- redirect
-                     ->with('success', 'About section updated!');
+        // $about = About_me::first();
+        // $about_img= Aboutme_image::first();
+         return back()->with('success', 'About Me section updated!');
     }
 
 
