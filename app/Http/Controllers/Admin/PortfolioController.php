@@ -58,6 +58,11 @@ class PortfolioController extends Controller
         $about_img= Aboutme_image::first();
         return view('admin.pages.aboutme', compact('about', 'about_img'));
     }
+    public function showAboutTextEditForm()
+    {
+        $about = About_me::first();
+        return view('admin.pages.updateaboutText', compact('about'));
+    }
     public function storeAbout(Request $request)
     {
         $request->validate([
@@ -66,14 +71,23 @@ class PortfolioController extends Controller
             'description' => 'required|string',
         ]);
 
-        About::updateOrCreate(
+        About_me::updateOrCreate(
             ['id' => 1],
             $request->only('title', 'subtitle', 'description')
         );
 
-        return back()->with('success', 'About section updated!');
+        $about = About_me::first();
+        $about_img= Aboutme_image::first();
+         return redirect()->route('admin.about.index') // <-- redirect
+                     ->with('success', 'About section updated!');
     }
 
+
+    public function AboutImage()
+    {
+        $about_img= Aboutme_image::first();
+        return view('admin.pages.aboutmeImg', compact('about_img'));
+    }
     public function storeAboutImage(Request $request)
     {
         $request->validate([
@@ -88,13 +102,16 @@ class PortfolioController extends Controller
             ['path' => $filename]
         );
 
-        return back()->with('success', 'About image updated!');
+        return back()->with('success', 'Image updated!');
     }
 
     // Skills Section
     public function skills(Request $request){
         $skills = Skill::all();
         return view('admin.pages.skills', compact('skills'));
+    }
+    public function createSkill(){
+        return view('admin.pages.addskills');
     }
     public function storeSkill(Request $request)
     {
@@ -119,28 +136,45 @@ class PortfolioController extends Controller
         $skill->delete();    
         return back()->with('success', 'Skill deleted!');
     }
-    public function updateSkill(Request $request, $id)
+
+    public function editSkill($id)
     {
-        $skill = Skill::findOrFail($id);    
+        $skill = Skill::findOrFail($id);
+        return view('admin.pages.updateskillform', compact('skill'));
+    }
+   public function updateSkill(Request $request, $id)
+    {
+        $skill = Skill::findOrFail($id);
         $request->validate([
-            'title' => 'required|string',
+            'name' => 'required|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png'
         ]);     
-        $data = ['title' => $request->title];    
+
+        $data = $request->only('name');
+
         if ($request->hasFile('image')) {
             $filename = time().'.'.$request->image->extension();
             $request->image->move(public_path('img'), $filename);
             $data['image'] = $filename;
-        }    
-        $skill->update($data);    
-        return back()->with('success', 'Skill updated!');
+        }
+
+        $skill->update($data);
+
+        return redirect()->route('admin.skills.index')
+                 ->with('success', 'Skill updated!');
     }
 
 
     // Education Section
-    public function eduaction(){
+
+    public function education()
+    {
         $educations = Education::all();
         return view('admin.pages.education', compact('educations'));
+    }   
+    public function createEducation(){
+        $educations = Education::all();
+        return view('admin.pages.addEducationForm', compact('educations'));
     }
         public function storeEducation(Request $request)
     {
@@ -161,9 +195,37 @@ class PortfolioController extends Controller
 
         Education::create($data);
 
-        return back()->with('success', 'Education added!');
+        return redirect()->route('admin.education.index')
+                 ->with('success', 'Education added!');
     }
+    public function editEducation($id)
+    {
+        $education = Education::findOrFail($id);
+        return view('admin.pages.editEducation', compact('education'));
+    }
+    public function updateEducation(Request $request, $id)
+    {
+        $education = Education::findOrFail($id);
+        $request->validate([
+            'degree'      => 'required|string',
+            'institution' => 'required|string',
+            'years'       => 'required|string',
+            'image'       => 'nullable|image'
+        ]);
 
+        $data = $request->only('degree', 'institution', 'years');
+
+        if ($request->hasFile('image')) {
+            $filename = time().'.'.$request->image->extension();
+            $request->image->move(public_path('img'), $filename);
+            $data['image'] = $filename;
+        }
+
+        $education->update($data);
+
+        redirect()->route('admin.education.index')
+                 ->with('success', 'Education updated!');
+    }
     public function deleteEducation($id)
     {
         $education = Education::findOrFail($id);    
@@ -180,6 +242,10 @@ class PortfolioController extends Controller
     {
         $projects = Project::all();
         return view('admin.pages.project', compact('projects'));
+    }
+
+    public function createProject(){
+        return view('admin.pages.addprojectform');
     }
     public function storeProject(Request $request)
     {
@@ -200,7 +266,8 @@ class PortfolioController extends Controller
             'image'       => $filename,
         ]);
 
-        return back()->with('success', 'Project added successfully!');
+        return redirect()->route('admin.projects.index')
+                 ->with('success', 'Project added!');
     }
 
     public function deleteProject($id)

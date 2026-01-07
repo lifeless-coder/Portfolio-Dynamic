@@ -12,11 +12,20 @@
        class="{{ request()->routeIs('admin.hero.index') ? 'active' : '' }}">
         Hero
     </a>
+    <div class="mt-2">
+        <a class="text-white px-3 py-2 d-block" data-bs-toggle="collapse" href="#aboutMenu">
+           About Me
+        </a>
 
-    <a href="{{ route('admin.about.index') }}"
+        <div class="collapse" id="aboutMenu">
+            <a href="{{ route('admin.about.index') }}" class="ps-4">Text Update</a>
+            <a href="{{ route('admin.aboutme.images') }}" class="ps-4">Image Update</a>
+        </div>
+    </div>
+    <!-- <a href="{{ route('admin.about.index') }}"
        class="{{ request()->routeIs('admin.about.index') ? 'active' : '' }}">
         About Me
-    </a>
+    </a> -->
 
     <a href="{{ route('admin.skills.index') }}"
        class="{{ request()->routeIs('admin.skills.index') ? 'active' : '' }}">

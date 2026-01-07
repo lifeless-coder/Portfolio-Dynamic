@@ -22,16 +22,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/hero', [AdminPortfolioController::class, 'hero'])->name('hero.index');
     Route::post('/hero-settings', [AdminPortfolioController::class, 'storeHero'])->name('hero.store');
     Route::get('/about-settings', [AdminPortfolioController::class, 'about'])->name('about.index');
+    Route::get('/about-text-edit', [AdminPortfolioController::class, 'showAboutTextEditForm'])->name('about.text.edit');
     Route::post('/about', [AdminPortfolioController::class, 'storeAbout'])->name('about.store');
+    Route::get('/aboutme-images', [AdminPortfolioController::class, 'AboutImage'])->name('aboutme.images');
     Route::post('/aboutme-images', [AdminPortfolioController::class, 'storeAboutImage'])->name('aboutme.storeImage');
     Route::get('/skills-settings', [AdminPortfolioController::class, 'skills'])->name('skills.index');
+    Route::get('/skills/create', [AdminPortfolioController::class, 'createSkill'])->name('skills.create');
     Route::post('/skills', [AdminPortfolioController::class, 'storeSkill'])->name('skills.store');
     Route::delete('/skills/{id}', [AdminPortfolioController::class, 'deleteSkill'])->name('skills.delete');
+    Route::get('/skills/{id}/edit', [AdminPortfolioController::class, 'editSkill'])->name('skills.edit');
     Route::put('/skills/{id}', [AdminPortfolioController::class, 'updateSkill'])->name('skills.update');
-    Route::post('/projects', [AdminPortfolioController::class, 'storeProject'])->name('projects.store');
-    Route::get('/education-settings', [AdminPortfolioController::class, 'eduaction'])->name('education.index');
+
+    Route::get('/education-settings', [AdminPortfolioController::class, 'education'])->name('education.index');
+    Route::get('/education/create', [AdminPortfolioController::class, 'createEducation'])->name('education.create');
+    Route::get('/education/{id}/edit', [AdminPortfolioController::class, 'editEducation'])->name('education.edit');
+    Route::put('/education/{id}', [AdminPortfolioController::class, 'updateEducation'])->name('education.update');
     Route::delete('/education/{id}', [AdminPortfolioController::class, 'deleteEducation'])->name('education.delete');
     Route::get('/projects-settings', [AdminPortfolioController::class, 'projects'])->name('projects.index');
+    Route::get('/projects/create', [AdminPortfolioController::class, 'createProject'])->name(name: 'projects.create');
+    Route::post('/projects', [AdminPortfolioController::class, 'storeProject'])->name('projects.store');
     Route::get('/projects/{id}/edit', [AdminPortfolioController::class, 'editProject'])->name('projects.edit');
     Route::put('/projects/{id}', [AdminPortfolioController::class, 'storeEditProject'])->name('projects.update');
     Route::delete('/projects/{id}', [AdminPortfolioController::class, 'deleteProject'])->name('projects.delete');
