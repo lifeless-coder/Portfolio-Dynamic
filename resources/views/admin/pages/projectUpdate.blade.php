@@ -1,82 +1,92 @@
 @extends('admin.layouts.app')
-{{-- SUCCESS MESSAGE --}}
+
 @section('content')
 @if(session('success'))
 <div class="alert alert-success">{{ session('success') }}</div>
 @endif
+
 <div class="card mb-4" id="projects">
     <div class="card-header fw-bold">Projects</div>
     <div class="card-body">
 
         <!-- EDIT PROJECT -->
         <form action="{{ route('admin.projects.update', $project->id) }}"
-            method="POST"
-            enctype="multipart/form-data">
-
+              method="POST"
+              enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <div class="mb-3">
                 <label>Project Title</label>
-                <input type="text" name="title" class="form-control" required>
+                <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    value="{{ old('title', $project->title) }}"
+                    required
+                >
             </div>
 
             <div class="mb-3">
                 <label>Description</label>
-                <textarea name="description" class="form-control" rows="3" required></textarea>
+                <textarea
+                    name="description"
+                    class="form-control"
+                    rows="3"
+                    required
+                >{{ old('description', $project->description) }}</textarea>
             </div>
 
             <div class="mb-3">
                 <label>Project URL</label>
-                <input type="url" name="project_url" class="form-control" required>
+                <input
+                    type="url"
+                    name="project_url"
+                    class="form-control"
+                    value="{{ old('project_url', $project->project_url) }}"
+                    required
+                >
             </div>
 
             <div class="mb-3">
                 <label>Project Image</label>
-                <input type="file" name="image" class="form-control" required>
+                <input
+                    type="file"
+                    name="image"
+                    class="form-control"
+                    accept="image/*"
+                    onchange="previewProjectImage(event)"
+                >
+                <small class="text-muted">
+                    Leave empty to keep existing image
+                </small>
             </div>
 
-            <button class="btn btn-success">Edit Project</button>
+            <!-- IMAGE PREVIEW -->
+            <div class="mb-3">
+                <img
+                    id="projectImagePreview"
+                    src="{{ asset('img/'.$project->image) }}"
+                    alt="Project Image"
+                    style="max-width: 220px; border: 1px solid #ddd; padding: 5px;"
+                >
+            </div>
+
+            <button class="btn btn-success">Save Changes</button>
         </form>
 
-        <!-- PROJECT LIST -->
-        <table class="table table-bordered align-middle">
-            <thead>
-                <tr>
-                    <th width="120">Image</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>URL</th>
-                    <th width="100">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <img src="{{ asset('img/'.$project->image) }}" width="100">
-                    </td>
-                    <td>{{ $project->title }}</td>
-                    <td>{{ $project->description }}</td>
-                    <td>
-                        <a href="{{ $project->project_url }}" target="_blank">View</a>
-                    </td>
-                    <td>
-                        <form action="{{ route('admin.projects.delete', $project->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm"
-                                onclick="return confirm('Delete this project?')">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-
+        
     </div>
 </div>
-@endsection
 
-{{-- SUCCESS MESSAGE --}}
+<script>
+    function previewProjectImage(event) {
+        const preview = document.getElementById('projectImagePreview');
+        const file = event.target.files[0];
+
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+        }
+    }
+</script>
+@endsection

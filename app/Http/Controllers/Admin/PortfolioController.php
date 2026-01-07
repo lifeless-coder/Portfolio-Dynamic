@@ -58,11 +58,7 @@ class PortfolioController extends Controller
         $about_img= Aboutme_image::first();
         return view('admin.pages.aboutme', compact('about', 'about_img'));
     }
-    public function showAboutTextEditForm()
-    {
-        $about = About_me::first();
-        return view('admin.pages.updateaboutText', compact('about'));
-    }
+    
     public function storeAbout(Request $request)
     {
         $request->validate([
@@ -309,7 +305,8 @@ class PortfolioController extends Controller
 
         $project->update($data);
 
-        return back()->with('success', 'Project updated!');
+        return redirect()->route('admin.projects.index')
+                 ->with('success', 'Project updated!');
     }
 
 
@@ -320,15 +317,15 @@ class PortfolioController extends Controller
     /* FOOTER TEXT */
     public function footerText()
     {
-        $texts = Footertext::all();
-        return view('admin.pages.footertext', compact('texts'));
+        $text = Footertext::first();
+        return view('admin.pages.footertext', compact('text'));
     }
 
     public function storeFooterText(Request $request)
 {
     Footertext::updateOrCreate(
-        ['id' => 1],              // condition
-        ['text' => $request->text] // data to update/create
+        ['id' => Footertext::first()->id ?? null],
+        ['text' => $request->text]
     );
 
     return back()->with('success', 'Footer text updated successfully');
@@ -368,19 +365,45 @@ class PortfolioController extends Controller
         return view('admin.pages.footerquicklink', compact('links'));
     }
 
+    public function createQuickLink(){
+        return view('admin.pages.addquicklink');
+    }
     public function storeQuickLink(Request $request)
     {
         quicklink::create([
             'name' => $request->name,
             'url'  => $request->url,
         ]);
-        return back()->with('success', 'Link added');
+        return redirect()->route('admin.footer.quicklink')
+                 ->with('success', 'Link added successfully!');
     }
 
     public function deleteQuickLink($id)
     {
         quicklink::findOrFail($id)->delete();
         return back()->with('success', 'Deleted');
+    }
+
+    public function updateQuickLink($id)
+    {
+        $link = quicklink::findOrFail($id);
+        return view('admin.pages.footerquicklinkeditform', compact('link'));
+    }
+    public function storeUpdateQuickLink(Request $request, $id)
+    {
+        $link = quicklink::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string',
+            'url'  => 'required|string',
+        ]);
+
+        $link->update([
+            'name' => $request->name,
+            'url'  => $request->url,
+        ]);
+
+        return redirect()->route('admin.footer.quicklink')
+                         ->with('success', 'Link updated successfully!');
     }
 }
 
